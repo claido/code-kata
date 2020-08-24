@@ -28,7 +28,7 @@ public class HighestCommonFactorService implements IHighestCommonFactorService {
             int highestCommonFactor = numbers[0];
 
             for (int i = 1; i < highestCommonFactor; i++) {
-                calculateHCF(numbers[1], highestCommonFactor);
+                calculateHCF(numbers[i], highestCommonFactor);
             }
 
             return highestCommonFactor;
@@ -44,12 +44,8 @@ public class HighestCommonFactorService implements IHighestCommonFactorService {
      * @returns highest common factor between two numbers
      */
     public int calculateHCF(int number1, int number2) {
-        LOGGER.info("Calculating highest common factor between" + number1 + " and " + number2);
+        LOGGER.info("Calculating highest common factor between " + number1 + " and " + number2);
         return number1 == 0 ? number2 : calculateHCF(number2 % number1, number1);
     }
 }
 
-interface IHighestCommonFactorService {
-
-    int highestCommonFactor(int[] numbers) throws InvalidInputException;
-}
