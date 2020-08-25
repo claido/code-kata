@@ -3,7 +3,6 @@ package za.co.code.kata.service;
 import org.apache.commons.lang3.StringUtils;
 import za.co.code.kata.model.*;
 import za.co.code.kata.utils.AddressUtils;
-import za.co.code.kata.utils.Constants;
 
 public class AddressService implements IAddressService {
 
@@ -20,21 +19,29 @@ public class AddressService implements IAddressService {
         stringBuilder.append("Address Detail (Type: Code (")
                 .append(addressType.getCode())
                 .append(") Name (")
-                .append(addressType.getName())
-                .append("), Line details : Line 1 (")
-                .append(addressLineDetail.getLine1());
+                .append(addressType.getName());
+        if (addressLineDetail != null) {
+            if (StringUtils.isNotBlank(addressLineDetail.getLine1())) {
 
-        if (addressLineDetail.getLine2() != null && !addressLineDetail.getLine2().trim().isEmpty()) {
-            stringBuilder.append(") Line 2").append(addressLineDetail.getLine2());
+                stringBuilder.append("), Line details : Line 1 (")
+                        .append(addressLineDetail.getLine1());
+            }
+            if (StringUtils.isNotBlank(addressLineDetail.getLine2())) {
+                stringBuilder.append(") Line 2").append(addressLineDetail.getLine2());
+            }
         }
+
 
         stringBuilder.append("), City : (")
                 .append(address.getCityOrTown())
-                .append("), Province/State: Code(")
-                .append(provinceOrState.getCode())
-                .append(") Name (")
-                .append(provinceOrState.getName())
-                .append("), Postal Code : (")
+                .append("), Province/State: Code(");
+
+        if (provinceOrState != null) {
+            stringBuilder.append(provinceOrState.getCode())
+                    .append(") Name (")
+                    .append(provinceOrState.getName());
+        }
+        stringBuilder.append("), Postal Code : (")
                 .append(address.getPostalCode())
                 .append(") Country : Code (")
                 .append(country.getCode())
@@ -45,13 +52,25 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public String printAddressByType(Type type) {
-        for (Address address : AddressUtils.readAddressesFromFile(Constants.ADDRESS_FILE_NAME)) {
-            if (address.getType().getCode().equalsIgnoreCase(type.getCode()))
-                return prettyPrintAddress(address);
+    public String printAllAddresses(String filename) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Address address : AddressUtils.readAddressesFromFile(filename)) {
+            stringBuilder.append(prettyPrintAddress(address)).append("\n");
         }
-        return null;
+        return stringBuilder.toString();
     }
+
+    @Override
+    public String printAddressByType(Type type, String fileName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Address address : AddressUtils.readAddressesFromFile(fileName)) {
+            if (address.getType().getCode().equalsIgnoreCase(type.getCode())) {
+                stringBuilder.append(prettyPrintAddress(address));
+            }
+        }
+        return stringBuilder.toString();
+    }
+
 
     @Override
     public String validateAddress(Address address) {

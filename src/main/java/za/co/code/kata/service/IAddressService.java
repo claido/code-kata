@@ -7,7 +7,9 @@ public interface IAddressService {
 
     String prettyPrintAddress(Address address);
 
-    String printAddressByType(Type type);
+    String printAddressByType(Type type,String filename);
 
     String validateAddress(Address address);
+
+    String printAllAddresses(String filename);
 }

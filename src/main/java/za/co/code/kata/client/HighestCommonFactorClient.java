@@ -4,6 +4,7 @@ import za.co.code.kata.exception.InvalidInputException;
 import za.co.code.kata.service.HighestCommonFactorService;
 import za.co.code.kata.service.IHighestCommonFactorService;
 
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class HighestCommonFactorClient {
@@ -14,11 +15,14 @@ public class HighestCommonFactorClient {
 
     public static void main(String[] args) throws InvalidInputException {
 
-        int length = args.length;
+        System.out.println("Enter a set of integer numbers separated by a coma:");
+        Scanner scanner = new Scanner(System.in);
+        String[] numList = scanner.nextLine().split(",");
+        int length = numList.length;
         int numbers[] = new int[length];
 
         for (int i = 0; i < length; i++)
-            numbers[i] = Integer.parseInt(args[i]);
+            numbers[i] = Integer.parseInt(numList[i].trim());
 
         int highestCommonFactor = highestCommonFactorService.highestCommonFactor(numbers);
 
